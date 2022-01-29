@@ -15,6 +15,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '../public')));
 
 
+app.use(require('./middleware/cookieParser'));
+app.use(Auth.createSession);
 
 app.get('/',
   (req, res) => {
@@ -103,6 +105,7 @@ app.post('/signup', (req, res, next) => {
 });
 
 app.post('/login', (req, res, next) => {
+
   return models.Users.get({username: req.body.username})
     .then(user => {
       if (user) {
